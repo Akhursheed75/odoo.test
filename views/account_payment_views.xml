@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Anchored on `//header` (generic, stable) and the `partner_id` field.
+        If the inherit_id below doesn't match your instance, open a Payment
+        in Developer Mode (bug icon > Edit View: Form) to find the correct
+        view id and swap it in.
+    -->
+    <record id="view_account_payment_form_o2c_inherit" model="ir.ui.view">
+        <field name="name">account.payment.form.o2c.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_o2c_auto_match" type="object"
+                        string="Auto-Match Invoice" class="btn-secondary"
+                        invisible="state != 'posted'"/>
+            </xpath>
+            <field name="partner_id" position="after">
+                <field name="x_needs_match_review" widget="boolean_toggle"/>
+                <field name="x_match_note" invisible="not x_match_note"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_payment_tree_review_o2c" model="ir.ui.view">
+        <field name="name">o2c.payments.review.list</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <list string="Payments Needing Review" decoration-danger="x_needs_match_review">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="partner_id"/>
+                <field name="amount" sum="Total"/>
+                <field name="ref"/>
+                <field name="x_match_note"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_o2c_payments_review" model="ir.actions.act_window">
+        <field name="name">Payments Needing Review</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('x_needs_match_review', '=', True)]</field>
+        <field name="context">{}</field>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                      (0, 0, {'view_mode': 'list', 'view_id': ref('view_account_payment_tree_review_o2c')}),
+                      (0, 0, {'view_mode': 'form'})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No payments need manual review right now.</p>
+            <p>Payments land here when more than one open invoice could plausibly match, or when the customer couldn't be identified.</p>
+        </field>
+    </record>
+</odoo>

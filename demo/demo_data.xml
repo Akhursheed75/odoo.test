@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Demo products. UoM deliberately left as the standard "Units" — add
+         your real "Carton" UoM via Sales > Configuration > Units of Measure
+         once the actual units-per-carton ratio is confirmed with the
+         client; the auto-classification logic picks up any UoM whose name
+         contains "carton", "box", or "case" automatically. -->
+    <record id="product_demo_moyo_pants" model="product.template">
+        <field name="name">MOYO Pants</field>
+        <field name="list_price">450.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="sale_ok">1</field>
+        <field name="purchase_ok">0</field>
+    </record>
+
+    <record id="product_demo_baby_wipes" model="product.template">
+        <field name="name">Baby Wipes</field>
+        <field name="list_price">250.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="sale_ok">1</field>
+        <field name="purchase_ok">0</field>
+    </record>
+
+    <record id="product_demo_nursing_pads" model="product.template">
+        <field name="name">Nursing Pads</field>
+        <field name="list_price">350.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="sale_ok">1</field>
+        <field name="purchase_ok">0</field>
+    </record>
+
+    <!-- Demo customers -->
+    <record id="partner_demo_retail_shop" model="res.partner">
+        <field name="name">Little Stars Baby Shop</field>
+        <field name="phone">0300 1234567</field>
+        <field name="company_type">company</field>
+        <field name="x_customer_type">retail</field>
+    </record>
+
+    <record id="partner_demo_wholesale_distributor" model="res.partner">
+        <field name="name">Rehman Wholesale Distributors</field>
+        <field name="phone">0321 9876543</field>
+        <field name="company_type">company</field>
+        <field name="x_customer_type">wholesale</field>
+    </record>
+
+    <record id="partner_demo_admin_customer" model="res.partner">
+        <field name="name">Ayesha Malik</field>
+        <field name="phone">0333 4455667</field>
+        <field name="company_type">person</field>
+        <field name="x_customer_type">admin_referred</field>
+    </record>
+
+    <!-- Deliberate near-duplicate of the record above (same phone, different
+         formatting/spelling) — use this to demo the phone-first duplicate
+         check: search "0333 445 5667" or "Ayesha" in the lookup wizard and
+         both records should surface as possible matches. -->
+    <record id="partner_demo_admin_customer_duplicate" model="res.partner">
+        <field name="name">Ayesha M.</field>
+        <field name="phone">0333-445-5667</field>
+        <field name="company_type">person</field>
+        <field name="x_customer_type">admin_referred</field>
+    </record>
+</odoo>

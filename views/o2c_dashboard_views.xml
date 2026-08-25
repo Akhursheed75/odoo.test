@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ===================== Sales by Channel ===================== -->
+    <record id="view_o2c_sales_dashboard_pivot" model="ir.ui.view">
+        <field name="name">o2c.sales.dashboard.pivot</field>
+        <field name="model">o2c.sales.dashboard</field>
+        <field name="arch" type="xml">
+            <pivot string="Sales by Channel">
+                <field name="x_order_source" type="row"/>
+                <field name="date_order" interval="month" type="col"/>
+                <field name="amount_total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_o2c_sales_dashboard_graph" model="ir.ui.view">
+        <field name="name">o2c.sales.dashboard.graph</field>
+        <field name="model">o2c.sales.dashboard</field>
+        <field name="arch" type="xml">
+            <graph string="Sales by Channel" type="bar">
+                <field name="x_order_source"/>
+                <field name="amount_total" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_o2c_sales_dashboard_list" model="ir.ui.view">
+        <field name="name">o2c.sales.dashboard.list</field>
+        <field name="model">o2c.sales.dashboard</field>
+        <field name="arch" type="xml">
+            <list string="Sales Orders">
+                <field name="name"/>
+                <field name="date_order"/>
+                <field name="partner_id"/>
+                <field name="x_order_source"/>
+                <field name="user_id"/>
+                <field name="state"/>
+                <field name="amount_total" sum="Total"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_o2c_sales_dashboard_search" model="ir.ui.view">
+        <field name="name">o2c.sales.dashboard.search</field>
+        <field name="model">o2c.sales.dashboard</field>
+        <field name="arch" type="xml">
+            <search string="Sales by Channel">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <filter string="Confirmed Orders" name="confirmed" domain="[('state', '=', 'sale')]"/>
+                <filter string="Online Retail" name="retail" domain="[('x_order_source', '=', 'online_retail')]"/>
+                <filter string="Online Wholesale" name="wholesale" domain="[('x_order_source', '=', 'online_wholesale')]"/>
+                <filter string="Administration" name="admin" domain="[('x_order_source', '=', 'administration')]"/>
+                <filter string="Sales Team" name="sales_team" domain="[('x_order_source', '=', 'sales_team')]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Order Source" name="group_source" context="{'group_by': 'x_order_source'}"/>
+                    <filter string="Salesperson" name="group_salesperson" context="{'group_by': 'user_id'}"/>
+                    <filter string="Order Date" name="group_date" context="{'group_by': 'date_order:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_o2c_sales_dashboard" model="ir.actions.act_window">
+        <field name="name">Sales by Channel</field>
+        <field name="res_model">o2c.sales.dashboard</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="search_view_id" ref="view_o2c_sales_dashboard_search"/>
+        <field name="context">{'search_default_confirmed': 1, 'search_default_group_source': 1}</field>
+    </record>
+
+    <!-- ===================== Receivables Aging ===================== -->
+    <record id="view_o2c_receivables_dashboard_pivot" model="ir.ui.view">
+        <field name="name">o2c.receivables.dashboard.pivot</field>
+        <field name="model">o2c.receivables.dashboard</field>
+        <field name="arch" type="xml">
+            <pivot string="Receivables Aging">
+                <field name="x_overdue_tier" type="row"/>
+                <field name="amount_residual" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_o2c_receivables_dashboard_graph" model="ir.ui.view">
+        <field name="name">o2c.receivables.dashboard.graph</field>
+        <field name="model">o2c.receivables.dashboard</field>
+        <field name="arch" type="xml">
+            <graph string="Receivables Aging" type="bar">
+                <field name="x_overdue_tier"/>
+                <field name="amount_residual" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_o2c_receivables_dashboard_list" model="ir.ui.view">
+        <field name="name">o2c.receivables.dashboard.list</field>
+        <field name="model">o2c.receivables.dashboard</field>
+        <field name="arch" type="xml">
+            <list string="Open Invoices"
+                  decoration-danger="x_overdue_tier in ('overdue_1_7', 'overdue_8_15', 'overdue_15_plus')"
+                  decoration-warning="x_overdue_tier in ('due_soon', 'due_today')">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="invoice_date_due"/>
+                <field name="amount_total" sum="Total"/>
+                <field name="amount_residual" sum="Outstanding"/>
+                <field name="payment_state"/>
+                <field name="x_overdue_tier"/>
+                <field name="invoice_user_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_o2c_receivables_dashboard_search" model="ir.ui.view">
+        <field name="name">o2c.receivables.dashboard.search</field>
+        <field name="model">o2c.receivables.dashboard</field>
+        <field name="arch" type="xml">
+            <search string="Receivables Aging">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <filter string="Overdue" name="overdue"
+                        domain="[('x_overdue_tier', 'in', ('overdue_1_7', 'overdue_8_15', 'overdue_15_plus'))]"/>
+                <filter string="Due Soon / Today" name="due_soon"
+                        domain="[('x_overdue_tier', 'in', ('due_soon', 'due_today'))]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Aging Tier" name="group_tier" context="{'group_by': 'x_overdue_tier'}"/>
+                    <filter string="Customer" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_o2c_receivables_dashboard" model="ir.actions.act_window">
+        <field name="name">Receivables Aging</field>
+        <field name="res_model">o2c.receivables.dashboard</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="search_view_id" ref="view_o2c_receivables_dashboard_search"/>
+        <field name="context">{'search_default_group_tier': 1}</field>
+    </record>
+</odoo>

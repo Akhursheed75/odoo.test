@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_o2c_root" name="Order to Cash" sequence="25"/>
+
+    <menuitem id="menu_o2c_orders" name="Sales Orders" parent="menu_o2c_root"
+              action="sale.action_orders" sequence="10"/>
+
+    <menuitem id="menu_o2c_payments_review" name="Payments Needing Review"
+              parent="menu_o2c_root" action="action_o2c_payments_review" sequence="20"/>
+
+    <menuitem id="menu_o2c_dashboards" name="Dashboards" parent="menu_o2c_root" sequence="30"/>
+    <menuitem id="menu_o2c_sales_dashboard" name="Sales by Channel"
+              parent="menu_o2c_dashboards" action="action_o2c_sales_dashboard" sequence="10"/>
+    <menuitem id="menu_o2c_receivables_dashboard" name="Receivables Aging"
+              parent="menu_o2c_dashboards" action="action_o2c_receivables_dashboard" sequence="20"/>
+</odoo>

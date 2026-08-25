@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_o2c_customer_lookup_wizard,o2c.customer.lookup.wizard,model_o2c_customer_lookup_wizard,base.group_user,1,1,1,1
+access_o2c_sales_dashboard,o2c.sales.dashboard,model_o2c_sales_dashboard,base.group_user,1,0,0,0
+access_o2c_receivables_dashboard,o2c.receivables.dashboard,model_o2c_receivables_dashboard,base.group_user,1,0,0,0

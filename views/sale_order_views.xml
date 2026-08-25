@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        NOTE ON VERSION SAFETY:
+        This inherits sale.view_order_form, anchored on the `partner_id`
+        field and the generic `//header` tag — both are about as stable an
+        anchor as exists in this view across recent Odoo versions. If this
+        view fails to install with an "element not found" error, open any
+        Sales Order in Developer Mode (bug icon > Edit View: Form) to see
+        the exact live structure on your instance and adjust the xpath
+        below accordingly. That is the single most likely fix needed.
+    -->
+    <record id="view_order_form_o2c_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.o2c.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="x_order_source" widget="badge"
+                       decoration-info="x_order_source == 'online_retail'"
+                       decoration-success="x_order_source == 'online_wholesale'"
+                       decoration-warning="x_order_source == 'administration'"
+                       decoration-primary="x_order_source == 'sales_team'"/>
+            </field>
+            <xpath expr="//header" position="inside">
+                <button name="action_open_customer_lookup" type="object"
+                        string="Find / Verify Customer" class="btn-secondary"
+                        invisible="state != 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

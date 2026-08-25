@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_o2c_customer_lookup_wizard_form" model="ir.ui.view">
+        <field name="name">o2c.customer.lookup.wizard.form</field>
+        <field name="model">o2c.customer.lookup.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Find / Verify Customer">
+                <group>
+                    <field name="sale_order_id" invisible="1"/>
+                    <field name="phone" placeholder="e.g. 0300 1234567"/>
+                    <field name="name" placeholder="Customer name"/>
+                </group>
+                <group string="Possible Matches" invisible="not searched">
+                    <field name="match_ids" nolabel="1" colspan="2">
+                        <list>
+                            <field name="name"/>
+                            <field name="phone"/>
+                            <field name="mobile"/>
+                            <field name="email"/>
+                        </list>
+                    </field>
+                    <field name="selected_partner_id"
+                           placeholder="Pick the matching customer above, then select here"/>
+                </group>
+                <group string="Or Create a New Customer" invisible="not searched">
+                    <field name="default_payment_term_id"/>
+                </group>
+                <footer>
+                    <button name="action_search" type="object" string="Search"
+                            class="btn-primary" invisible="searched"/>
+                    <button name="action_use_existing" type="object"
+                            string="Use Selected Customer" class="btn-primary"
+                            invisible="not searched"/>
+                    <button name="action_create_new" type="object"
+                            string="Create New Customer" class="btn-secondary"
+                            invisible="not searched"/>
+                    <button name="action_search" type="object" string="Search Again"
+                            class="btn-link" invisible="not searched"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
